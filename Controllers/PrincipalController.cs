@@ -8,5 +8,6 @@ namespace MVC_Contactos.Controllers
         public IActionResult ayuda() => View();
         public IActionResult Acerca() => View();
         public IActionResult Contacto() => View();
+        public IActionResult EnConstruccion() => View();
     }
 }

@@ -129,6 +129,79 @@ namespace MVC_Contactos.Migrations
                     b.HasIndex("TBLROLESIdRolEmpleado");
 
                     b.ToTable("TBLEMPLEADO");
+
+                    b.HasData(
+                        new
+                        {
+                            IdEmpleado = 1,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmIngreso = new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdRolEmpleado = 1,
+                            NumDocumento = 1012345678L,
+                            StrDireccion = "Cra 10 # 20-30",
+                            StrEmail = "laura.gomez@empresa.com",
+                            StrTelefono = "3001112233",
+                            StrUsuarioModifico = "javier",
+                            strDatosAdicionales = "Administradora general",
+                            strNombre = "Laura Gómez"
+                        },
+                        new
+                        {
+                            IdEmpleado = 2,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmIngreso = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdRolEmpleado = 2,
+                            NumDocumento = 1023456789L,
+                            StrDireccion = "Calle 45 # 12-08",
+                            StrEmail = "carlos.ruiz@empresa.com",
+                            StrTelefono = "3012223344",
+                            StrUsuarioModifico = "javier",
+                            strDatosAdicionales = "Ventas zona norte",
+                            strNombre = "Carlos Ruiz"
+                        },
+                        new
+                        {
+                            IdEmpleado = 3,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmIngreso = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdRolEmpleado = 3,
+                            NumDocumento = 1034567890L,
+                            StrDireccion = "Av. 68 # 5-50",
+                            StrEmail = "marta.perez@empresa.com",
+                            StrTelefono = "3023334455",
+                            StrUsuarioModifico = "javier",
+                            strDatosAdicionales = "Caja principal",
+                            strNombre = "Marta Pérez"
+                        },
+                        new
+                        {
+                            IdEmpleado = 4,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmIngreso = new DateTime(2024, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdRolEmpleado = 2,
+                            NumDocumento = 1045678901L,
+                            StrDireccion = "Cra 7 # 72-14",
+                            StrEmail = "andres.torres@empresa.com",
+                            StrTelefono = "3034445566",
+                            StrUsuarioModifico = "javier",
+                            strDatosAdicionales = "Ventas zona sur",
+                            strNombre = "Andrés Torres"
+                        },
+                        new
+                        {
+                            IdEmpleado = 5,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmIngreso = new DateTime(2022, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmRetiro = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdRolEmpleado = 3,
+                            NumDocumento = 1056789012L,
+                            StrDireccion = "Calle 100 # 15-20",
+                            StrEmail = "sofia.herrera@empresa.com",
+                            StrTelefono = "3045556677",
+                            StrUsuarioModifico = "javier",
+                            strDatosAdicionales = "Retirada por fin de contrato",
+                            strNombre = "Sofía Herrera"
+                        });
                 });
 
             modelBuilder.Entity("MVC_Contactos.Models.TBLROLES", b =>

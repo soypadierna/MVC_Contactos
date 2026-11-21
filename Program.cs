@@ -12,7 +12,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseStatusCodePages();
     app.UseHsts();
 }
 
@@ -25,7 +25,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Principal}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 app.Run();

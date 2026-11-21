@@ -1,23 +1,13 @@
+@model MVC_Contactos.Models.ModeloPersona
 @{
-    ViewBag.Title = "NUEVO REGISTRO ";
-    Layout = "~/Views/Shared/_LayoutModerno.cshtml";
+    ViewBag.Title = "Nueva Persona";
 }
-<br />
-<h2 class="well">@ViewBag.Title </h2>
-<br />
-<div>
-    <form method="post" action="/CRUD_Persona/Nuevo">
-        <input type="hidden" name="PersonaId" value="" />
-        <p></p>
-        Nombre:
-        <input type="text" name="Nombre" value="" />
-        <p></p>
-        Telefono:
-        <input type="text" name="Telefono" value="" />
-        <p></p>
-        Correo:
-        <input type="text" name="Email" value="" />
-        <p></p>
-        <input type="submit" value="GUARDAR" /> <a class="btn btn-primary " href="/CRUD_Persona">Retornar</a>
-    </form>
-</div>
+<h2>Nueva Persona</h2>
+
+<form asp-action="Nuevo" method="post" class="form-horizontal">
+    <h4>Persona</h4>
+    <p class="text-muted"><span class="text-danger">*</span> Campo obligatorio</p>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <partial name="_Campos" model="Model" />
+</form>

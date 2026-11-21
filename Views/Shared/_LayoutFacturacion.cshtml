@@ -1,3 +1,10 @@
+@{
+    var controlador = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var accion = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    string Activo(string a) =>
+        controlador.Equals("Principal", StringComparison.OrdinalIgnoreCase) &&
+        accion.Equals(a, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,14 +14,29 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <style>
         .navbar { margin-bottom: 0; border-radius: 0; }
-        .row.content { height: 565px }
-        .sidenav { padding-top: 20px; background-color: #345863; height: 100%; }
+        .sidenav { padding: 20px 15px; background-color: #345863; }
         footer { background-color: #555; color: white; padding: 15px; }
-        @@media screen and (max-width: 767px) {
-            .sidenav { height: auto; padding: 15px; }
-            .row.content { height: auto; }
+        footer p { margin: 0; }
+        .caja { background-color: #eeeeee; padding: 20px; margin: 15px 0; border-radius: 4px; }
+        .caja h2, .caja h4, .caja p { margin-top: 0; }
+        .en-construccion { color: #999; }
+        .en-construccion:hover { color: #999; cursor: not-allowed; }
+        .contenido { padding-bottom: 20px; }
+        img, iframe { max-width: 100%; }
+        input.form-control, select.form-control, textarea.form-control { max-width: 100%; }
+        .form-horizontal .form-group { margin-bottom: 18px; }
+        .form-horizontal .control-label { font-weight: 600; }
+        .form-horizontal .help-block { font-size: 12px; }
+        .form-horizontal input:focus, .form-horizontal select:focus, .form-horizontal textarea:focus { border-color: #345863; box-shadow: 0 0 6px rgba(52, 88, 99, .4); }
+        .form-horizontal .input-validation-error { border-color: #a94442; }
+        @@media screen and (max-width: 991px) { .form-horizontal .control-label { text-align: left; } }
+        @@media screen and (min-width: 768px) {
+            .row.content { display: flex; min-height: 565px; }
+            .row.content::before, .row.content::after { display: none; }
         }
     </style>
 </head>
@@ -27,33 +49,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">FACTURACION</a>
+                <a class="navbar-brand" href="@Url.Action("Index", "Principal")">FACTURACION</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active">@Html.ActionLink("Inicio", "Index", "Principal")</li>
-                    <li>@Html.ActionLink("Acerca", "Acerca", "Principal")</li>
-                    <li>@Html.ActionLink("Ayuda", "Ayuda", "Principal")</li>
-                    <li>@Html.ActionLink("Contacto", "Contacto", "Principal")</li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li class="@Activo("Index")">@Html.ActionLink("Inicio", "Index", "Principal")</li>
+                    <li class="@Activo("Acerca")">@Html.ActionLink("Acerca", "Acerca", "Principal")</li>
+                    <li class="@Activo("ayuda")">@Html.ActionLink("Ayuda", "ayuda", "Principal")</li>
+                    <li class="@Activo("Contacto")">@Html.ActionLink("Contacto", "Contacto", "Principal")</li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container-fluid text-center">
         <div class="row content">
-            <div class="col-sm-2 sidenav">
+            <div class="col-sm-3 col-md-2 sidenav">
                 <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title"><a data-toggle="collapse" href="#collapse1">TABLAS</a></h4>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse">
-                            <div class="panel-body">@Html.ActionLink("Clientes", "Index", "Clientes")</div>
-                            <div class="panel-body">Productos</div>
-                            <div class="panel-body">Categorias</div>
+                            <div class="panel-body"><a asp-controller="Clientes" asp-action="Index">Clientes</a></div>
+                            <div class="panel-body"><a asp-controller="CRUD_Persona" asp-action="Index">Personas</a></div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Productos</a></div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Categoria prod</a></div>
                         </div>
                     </div>
                 </div>
@@ -63,8 +83,8 @@
                             <h4 class="panel-title"><a data-toggle="collapse" href="#collapse2">FACTURAS</a></h4>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
-                            <div class="panel-body">facturas</div>
-                            <div class="panel-body">Informes</div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Facturas</a></div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Informes</a></div>
                         </div>
                     </div>
                 </div>
@@ -74,20 +94,40 @@
                             <h4 class="panel-title"><a data-toggle="collapse" href="#collapse3">SEGURIDAD</a></h4>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
-                            <div class="panel-body">@Html.ActionLink("Empleados", "Index", "TBLempleado")</div>
-                            <div class="panel-body">Roles</div>
-                            <div class="panel-body">Seguridad</div>
+                            <div class="panel-body"><a asp-controller="TBLempleado" asp-action="Index">Empleados</a></div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Roles</a></div>
+                            <div class="panel-body"><a class="en-construccion" asp-controller="Principal" asp-action="EnConstruccion"><span class="glyphicon glyphicon-wrench"></span> Seguridad</a></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-10 text-left">
+            <div class="col-sm-9 col-md-10 text-left contenido">
                 @RenderBody()
             </div>
         </div>
     </div>
     <footer class="container-fluid text-center">
-        <p>Footer Text</p>
+        <p>Derechos reservados &copy; soypadierna 2026-2</p>
     </footer>
+    <script>
+        $(function () {
+            $('table.table').wrap('<div class="table-responsive"></div>');
+
+            // Asterisco rojo en campos obligatorios
+            $('input[data-val-required], select[data-val-required], textarea[data-val-required]').each(function () {
+                $('label[for="' + this.id + '"]').append(' <span class="text-danger">*</span>');
+            });
+
+            // Foco en el primer campo del formulario
+            $('form.form-horizontal').find('input[type!=hidden], select, textarea').not('[type=submit]').first().focus();
+
+            // Evita doble envío al guardar
+            $('form.form-horizontal').on('submit', function () {
+                var $f = $(this);
+                if ($f.valid && !$f.valid()) { return; }
+                $f.find('[type=submit]').prop('disabled', true).val('Guardando...');
+            });
+        });
+    </script>
 </body>
 </html>

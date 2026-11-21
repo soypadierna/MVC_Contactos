@@ -13,34 +13,28 @@ namespace MVC_Contactos.Controllers
             _context = context;
         }
 
-        // LISTADO DE LAS PERSONAS-PAGINA PRINCIPAL
         public IActionResult Index()
         {
-            ViewBag.Titulo = "ADMIN PERSONAS";
+            ViewBag.Titulo = "Lista de Personas";
             return View(_context.Personas.ToList());
         }
 
-        // GET: NUEVO REGISTRO- formulario en blanco
         public IActionResult Nuevo()
         {
-            return View();
+            return View(new ModeloPersona());
         }
 
         [HttpPost]
-        public IActionResult Nuevo(IFormCollection collection)
+        [ValidateAntiForgeryToken]
+        public IActionResult Nuevo(ModeloPersona model)
         {
-            var Persona = new ModeloPersona
-            {
-                Nombre = collection["Nombre"].ToString(),
-                Telefono = collection["Telefono"].ToString(),
-                Email = collection["Email"].ToString()
-            };
-            _context.Personas.Add(Persona);
+            if (!ModelState.IsValid) return View(model);
+            model.PersonaId = 0;
+            _context.Personas.Add(model);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // GET: CRUD_Persona editar
         public IActionResult Editar(int id = 0)
         {
             var Persona = _context.Personas.Find(id);
@@ -49,18 +43,19 @@ namespace MVC_Contactos.Controllers
         }
 
         [HttpPost]
-        public IActionResult Editar(IFormCollection collection)
+        [ValidateAntiForgeryToken]
+        public IActionResult Editar(ModeloPersona model)
         {
-            var Persona = _context.Personas.Find(int.Parse(collection["PersonaId"].ToString()));
+            if (!ModelState.IsValid) return View(model);
+            var Persona = _context.Personas.Find(model.PersonaId);
             if (Persona == null) return NotFound();
-            Persona.Nombre = collection["Nombre"].ToString();
-            Persona.Telefono = collection["Telefono"].ToString();
-            Persona.Email = collection["Email"].ToString();
+            Persona.Nombre = model.Nombre;
+            Persona.Telefono = model.Telefono;
+            Persona.Email = model.Email;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // GET: Borrado de registro
         public IActionResult Borrar(int id = 0)
         {
             var Persona = _context.Personas.Find(id);
@@ -69,9 +64,10 @@ namespace MVC_Contactos.Controllers
         }
 
         [HttpPost]
-        public IActionResult BorrarConfirmado(IFormCollection collection)
+        [ValidateAntiForgeryToken]
+        public IActionResult BorrarConfirmado(int PersonaId)
         {
-            var Persona = _context.Personas.Find(int.Parse(collection["PersonaId"].ToString()));
+            var Persona = _context.Personas.Find(PersonaId);
             if (Persona == null) return NotFound();
             _context.Personas.Remove(Persona);
             _context.SaveChanges();
