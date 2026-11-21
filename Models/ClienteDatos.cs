@@ -68,6 +68,20 @@ namespace MVC_Contactos.Models
             return cliente;
         }
 
+        public bool ExisteDocumento(long documento, int? excluirId = null)
+        {
+            using (MySqlConnection con = new MySqlConnection(conexion))
+            {
+                string sql = "SELECT COUNT(*) FROM TBLCLIENTES WHERE NumDocumento = @Doc";
+                if (excluirId.HasValue) sql += " AND IdCliente <> @Excluir";
+                MySqlCommand cmd = new MySqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Doc", documento);
+                if (excluirId.HasValue) cmd.Parameters.AddWithValue("@Excluir", excluirId.Value);
+                con.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
         public void InsertarCliente(Cliente cliente)
         {
             using (MySqlConnection con = new MySqlConnection(conexion))

@@ -14,9 +14,26 @@ namespace MVC_Contactos.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? q, bool verRetirados = false)
         {
-            return View(_context.TBLEMPLEADO.ToList());
+            var hoy = DateTime.Today;
+            var query = _context.TBLEMPLEADO.AsQueryable();
+
+            if (!verRetirados)
+                query = query.Where(e => e.DtmRetiro == null || e.DtmRetiro > hoy);
+
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var t = q.Trim();
+                query = query.Where(e =>
+                    (e.strNombre != null && e.strNombre.Contains(t)) ||
+                    e.NumDocumento.ToString().Contains(t) ||
+                    (e.StrEmail != null && e.StrEmail.Contains(t)));
+            }
+
+            ViewBag.Q = q;
+            ViewBag.VerRetirados = verRetirados;
+            return View(query.OrderBy(e => e.strNombre).ToList());
         }
 
         public IActionResult Nuevo()
@@ -73,19 +90,32 @@ namespace MVC_Contactos.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult Borrar(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Retirar(int id)
         {
-            var otabla = _context.TBLEMPLEADO.Find(id);
-            if (otabla == null) return NotFound();
-            if (_context.TBLFACTURAS.Any(f => f.IdEmpleado == id))
-            {
-                TempData["Error"] = "No se puede eliminar: el empleado tiene facturas.";
-                return Redirect("/TBLEmpleado/index");
-            }
-            _context.TBLEMPLEADO.Remove(otabla);
+            var e = _context.TBLEMPLEADO.Find(id);
+            if (e == null) return NotFound();
+            e.DtmRetiro = DateTime.Today;
+            e.DtmFechaModifica = DateTime.Now.Date;
+            e.StrUsuarioModifico = "javier";
             _context.SaveChanges();
-            return Redirect("/TBLEmpleado/index");
+            TempData["Ok"] = "Empleado retirado.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Reactivar(int id)
+        {
+            var e = _context.TBLEMPLEADO.Find(id);
+            if (e == null) return NotFound();
+            e.DtmRetiro = null;
+            e.DtmFechaModifica = DateTime.Now.Date;
+            e.StrUsuarioModifico = "javier";
+            _context.SaveChanges();
+            TempData["Ok"] = "Empleado reactivado.";
+            return RedirectToAction("Index", new { verRetirados = true });
         }
     }
 }

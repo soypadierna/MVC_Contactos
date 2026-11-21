@@ -30,6 +30,9 @@ namespace MVC_Contactos.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Cliente cliente)
         {
+            if (cliente.NumDocumento.HasValue && _datos.ExisteDocumento(cliente.NumDocumento.Value))
+                ModelState.AddModelError("NumDocumento", "Ya existe un cliente con ese documento.");
+
             if (!ModelState.IsValid)
             {
                 return View(cliente);
@@ -54,6 +57,9 @@ namespace MVC_Contactos.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Cliente cliente)
         {
+            if (cliente.NumDocumento.HasValue && _datos.ExisteDocumento(cliente.NumDocumento.Value, cliente.IdCliente))
+                ModelState.AddModelError("NumDocumento", "Ya existe un cliente con ese documento.");
+
             if (!ModelState.IsValid)
             {
                 return View(cliente);
@@ -64,10 +70,11 @@ namespace MVC_Contactos.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
         {
-            var cliente = _datos.ObtenerCliente(id);
-            if (cliente == null)
+            if (_datos.ObtenerCliente(id) == null)
             {
                 return NotFound();
             }
@@ -76,19 +83,8 @@ namespace MVC_Contactos.Controllers
                 TempData["Error"] = "No se puede eliminar: el cliente tiene facturas.";
                 return RedirectToAction("Index");
             }
-            return View(cliente);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            if (TieneFacturas(id))
-            {
-                TempData["Error"] = "No se puede eliminar: el cliente tiene facturas.";
-                return RedirectToAction("Index");
-            }
             _datos.EliminarCliente(id);
+            TempData["Ok"] = "Cliente eliminado.";
             return RedirectToAction("Index");
         }
 
