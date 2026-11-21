@@ -15,6 +15,8 @@ namespace MVC_Contactos.Data
         public DbSet<TBLROLES> TBLROLES => Set<TBLROLES>();
         public DbSet<TBLCATEGORIAS> TBLCATEGORIAS => Set<TBLCATEGORIAS>();
         public DbSet<TBLPRODUCTOS> TBLPRODUCTOS => Set<TBLPRODUCTOS>();
+        public DbSet<TBLFACTURAS> TBLFACTURAS => Set<TBLFACTURAS>();
+        public DbSet<TBLFACTURADETALLE> TBLFACTURADETALLE => Set<TBLFACTURADETALLE>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +34,33 @@ namespace MVC_Contactos.Data
                 e.HasOne(p => p.Categoria)
                     .WithMany()
                     .HasForeignKey(p => p.IdCategoria)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<TBLFACTURAS>(e =>
+            {
+                e.Property(f => f.DecSubtotal).HasPrecision(18, 2);
+                e.Property(f => f.DecDescuento).HasPrecision(18, 2);
+                e.Property(f => f.DecIva).HasPrecision(18, 2);
+                e.Property(f => f.DecTotal).HasPrecision(18, 2);
+                e.HasIndex(f => f.IdCliente);
+                e.HasOne(f => f.Empleado)
+                    .WithMany()
+                    .HasForeignKey(f => f.IdEmpleado)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<TBLFACTURADETALLE>(e =>
+            {
+                e.Property(d => d.DecPrecioUnitario).HasPrecision(18, 2);
+                e.Property(d => d.DecSubtotal).HasPrecision(18, 2);
+                e.HasOne(d => d.Factura)
+                    .WithMany(f => f.Detalles)
+                    .HasForeignKey(d => d.IdFactura)
+                    .OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(d => d.Producto)
+                    .WithMany()
+                    .HasForeignKey(d => d.IdProducto)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -75,6 +104,23 @@ namespace MVC_Contactos.Data
                 new TBLPRODUCTOS { IdProducto = 7, StrNombre = "Jabón de manos 500 ml", StrCodigo = "ASE-002", DecPrecioCompra = 3000m, DecPrecioVenta = 5200m, IdCategoria = 3, StrDetalle = "Antibacterial", IntStock = 40, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" },
                 new TBLPRODUCTOS { IdProducto = 8, StrNombre = "Cuaderno rayado 100 hojas", StrCodigo = "PAP-001", DecPrecioCompra = 2500m, DecPrecioVenta = 4500m, IdCategoria = 4, StrDetalle = "Pasta blanda", IntStock = 3, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" },
                 new TBLPRODUCTOS { IdProducto = 9, StrNombre = "Lapicero azul", StrCodigo = "PAP-002", DecPrecioCompra = 600m, DecPrecioVenta = 1200m, IdCategoria = 4, StrDetalle = "Punta media", IntStock = 200, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" }
+            );
+
+            modelBuilder.Entity<TBLFACTURAS>().HasData(
+                new TBLFACTURAS { IdFactura = 1, IdCliente = 1, IdEmpleado = 2, DtmFecha = new DateTime(2026, 11, 18, 15, 0, 0), IdEstado = 2, DecSubtotal = 32500m, DecDescuento = 0m, DecIva = 6175m, DecTotal = 38675m, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" },
+                new TBLFACTURAS { IdFactura = 2, IdCliente = 2, IdEmpleado = 4, DtmFecha = new DateTime(2026, 11, 19, 16, 30, 0), IdEstado = 1, DecSubtotal = 35200m, DecDescuento = 3520m, DecIva = 6019.20m, DecTotal = 37699.20m, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" },
+                new TBLFACTURAS { IdFactura = 3, IdCliente = 1, IdEmpleado = 2, DtmFecha = new DateTime(2026, 11, 20, 14, 15, 0), IdEstado = 3, DecSubtotal = 19200m, DecDescuento = 0m, DecIva = 3648m, DecTotal = 22848m, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" },
+                new TBLFACTURAS { IdFactura = 4, IdCliente = 3, IdEmpleado = 3, DtmFecha = new DateTime(2026, 10, 25, 17, 0, 0), IdEstado = 4, DecSubtotal = 16500m, DecDescuento = 825m, DecIva = 2978.25m, DecTotal = 18653.25m, DtmFechaModifica = fecha, StrUsuarioModifico = "javier" }
+            );
+
+            modelBuilder.Entity<TBLFACTURADETALLE>().HasData(
+                new TBLFACTURADETALLE { IdDetalle = 1, IdFactura = 1, IdProducto = 1, IntCantidad = 10, DecPrecioUnitario = 1500m, DecSubtotal = 15000m },
+                new TBLFACTURADETALLE { IdDetalle = 2, IdFactura = 1, IdProducto = 4, IntCantidad = 5, DecPrecioUnitario = 3500m, DecSubtotal = 17500m },
+                new TBLFACTURADETALLE { IdDetalle = 3, IdFactura = 2, IdProducto = 6, IntCantidad = 2, DecPrecioUnitario = 9800m, DecSubtotal = 19600m },
+                new TBLFACTURADETALLE { IdDetalle = 4, IdFactura = 2, IdProducto = 7, IntCantidad = 3, DecPrecioUnitario = 5200m, DecSubtotal = 15600m },
+                new TBLFACTURADETALLE { IdDetalle = 5, IdFactura = 3, IdProducto = 2, IntCantidad = 4, DecPrecioUnitario = 4800m, DecSubtotal = 19200m },
+                new TBLFACTURADETALLE { IdDetalle = 6, IdFactura = 4, IdProducto = 8, IntCantidad = 1, DecPrecioUnitario = 4500m, DecSubtotal = 4500m },
+                new TBLFACTURADETALLE { IdDetalle = 7, IdFactura = 4, IdProducto = 9, IntCantidad = 10, DecPrecioUnitario = 1200m, DecSubtotal = 12000m }
             );
         }
     }

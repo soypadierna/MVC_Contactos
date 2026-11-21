@@ -1,0 +1,154 @@
+@model MVC_Contactos.Models.FacturaNuevaVM
+@{
+    ViewBag.Title = "Nueva factura";
+}
+<h2>Nueva factura</h2>
+
+<form asp-action="Nuevo" method="post" class="form-horizontal" id="formFactura">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="IdCliente" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <select asp-for="IdCliente" asp-items="(SelectList)ViewBag.IdCliente" class="form-control">
+                <option value="">-- Seleccione un cliente --</option>
+            </select>
+            <span asp-validation-for="IdCliente" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdEmpleado" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <select asp-for="IdEmpleado" asp-items="(SelectList)ViewBag.IdEmpleado" class="form-control">
+                <option value="">-- Seleccione el emisor --</option>
+            </select>
+            <span asp-validation-for="IdEmpleado" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdEstado" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <select asp-for="IdEstado" class="form-control">
+                <option value="1">Pendiente</option>
+                <option value="2">Pagada</option>
+            </select>
+            <span asp-validation-for="IdEstado" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DescuentoPorcentaje" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="DescuentoPorcentaje" class="form-control" placeholder="0" />
+            <span asp-validation-for="DescuentoPorcentaje" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h4>Productos</h4>
+    <table class="table table-bordered" id="lineas">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th class="text-right" style="width:120px">Precio</th>
+                <th style="width:120px">Cantidad</th>
+                <th class="text-right" style="width:130px">Subtotal</th>
+                <th style="width:90px"></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <p><button type="button" class="btn btn-default" id="btnAgregar">Agregar línea</button></p>
+
+    <table class="table table-bordered" id="totales" style="max-width:360px">
+        <tr><td>Subtotal</td><td class="text-right" id="tSub">0.00</td></tr>
+        <tr><td>Descuento</td><td class="text-right" id="tDesc">0.00</td></tr>
+        <tr><td>IVA (<span id="ivaPct"></span>%)</td><td class="text-right" id="tIva">0.00</td></tr>
+        <tr><th>Total</th><th class="text-right" id="tTot">0.00</th></tr>
+    </table>
+    <p class="help-block">Vista previa: el servidor calcula y confirma el total al guardar.</p>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        var catalogo = @Html.Raw(System.Text.Json.JsonSerializer.Serialize((object)ViewBag.Catalogo));
+        var iva = @Html.Raw(Convert.ToString(ViewBag.Iva, System.Globalization.CultureInfo.InvariantCulture));
+        var iniciales = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Lineas));
+        var porId = {};
+        catalogo.forEach(function (p) { porId[p.id] = p; });
+        $('#ivaPct').text(iva);
+
+        function esc(s) { return $('<div>').text(s).html(); }
+        function r2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
+
+        function opciones(sel) {
+            var h = '<option value="">-- Producto --</option>';
+            catalogo.forEach(function (p) {
+                h += '<option value="' + p.id + '"' + (p.id == sel ? ' selected' : '') + '>' +
+                     esc(p.nombre) + ' (' + esc(p.codigo) + ') - stock ' + p.stock + '</option>';
+            });
+            return h;
+        }
+
+        function recalcular() {
+            var sub = 0;
+            $('#lineas tbody tr').each(function () {
+                var p = porId[$(this).find('.sel-prod').val()];
+                var cant = parseInt($(this).find('.cant').val(), 10) || 0;
+                var precio = p ? p.precio : 0;
+                var s = r2(precio * cant);
+                $(this).find('.precio').text(p ? precio.toFixed(2) : '-');
+                $(this).find('.sub').text(s.toFixed(2));
+                sub += s;
+            });
+            var pct = parseFloat($('#DescuentoPorcentaje').val()) || 0;
+            var desc = r2(sub * pct / 100);
+            var baseIva = sub - desc;
+            var im = r2(baseIva * iva / 100);
+            $('#tSub').text(sub.toFixed(2));
+            $('#tDesc').text(desc.toFixed(2));
+            $('#tIva').text(im.toFixed(2));
+            $('#tTot').text((baseIva + im).toFixed(2));
+        }
+
+        function agregar(idProd, cant) {
+            var fila = $('<tr>' +
+                '<td><select class="form-control sel-prod">' + opciones(idProd) + '</select></td>' +
+                '<td class="precio text-right">-</td>' +
+                '<td><input type="text" inputmode="numeric" class="form-control cant" value="' + (cant || 1) + '" /></td>' +
+                '<td class="sub text-right">0.00</td>' +
+                '<td><button type="button" class="btn btn-danger btn-sm quitar">Quitar</button></td>' +
+                '</tr>');
+            $('#lineas tbody').append(fila);
+            recalcular();
+        }
+
+        $('#btnAgregar').on('click', function () { agregar(); });
+        $('#lineas')
+            .on('change', '.sel-prod', recalcular)
+            .on('input', '.cant', function () { this.value = this.value.replace(/\D/g, ''); recalcular(); })
+            .on('click', '.quitar', function () { $(this).closest('tr').remove(); recalcular(); });
+        $('#DescuentoPorcentaje').on('input', recalcular);
+
+        $('#formFactura').on('submit', function () {
+            $('#lineas tbody .sel-prod').filter(function () { return !this.value; }).closest('tr').remove();
+            $('#lineas tbody tr').each(function (i) {
+                var $c = $(this).find('.cant');
+                if (!$c.val()) { $c.val(0); }
+                $(this).find('.sel-prod').attr('name', 'Lineas[' + i + '].IdProducto');
+                $c.attr('name', 'Lineas[' + i + '].Cantidad');
+            });
+        });
+
+        if (iniciales.length) {
+            iniciales.forEach(function (l) { agregar(l.IdProducto, l.Cantidad); });
+        } else {
+            agregar();
+        }
+    });
+</script>

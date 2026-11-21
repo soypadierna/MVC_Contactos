@@ -4,6 +4,11 @@
 }
 <h2>Lista de Empleados</h2>
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="well">
     <a asp-action="Nuevo" class="btn btn-primary">NUEVO</a>
 </div>

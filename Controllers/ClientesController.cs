@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MVC_Contactos.Data;
 using MVC_Contactos.Models;
 
 namespace MVC_Contactos.Controllers
@@ -6,10 +7,12 @@ namespace MVC_Contactos.Controllers
     public class ClientesController : Controller
     {
         private readonly ClienteDatos _datos;
+        private readonly ContactosDbContext _context;
 
-        public ClientesController(IConfiguration configuration)
+        public ClientesController(IConfiguration configuration, ContactosDbContext context)
         {
             _datos = new ClienteDatos(configuration);
+            _context = context;
         }
 
         public IActionResult Index()
@@ -68,6 +71,11 @@ namespace MVC_Contactos.Controllers
             {
                 return NotFound();
             }
+            if (TieneFacturas(id))
+            {
+                TempData["Error"] = "No se puede eliminar: el cliente tiene facturas.";
+                return RedirectToAction("Index");
+            }
             return View(cliente);
         }
 
@@ -75,8 +83,18 @@ namespace MVC_Contactos.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            if (TieneFacturas(id))
+            {
+                TempData["Error"] = "No se puede eliminar: el cliente tiene facturas.";
+                return RedirectToAction("Index");
+            }
             _datos.EliminarCliente(id);
             return RedirectToAction("Index");
+        }
+
+        private bool TieneFacturas(int idCliente)
+        {
+            return _context.TBLFACTURAS.Any(f => f.IdCliente == idCliente);
         }
     }
 }

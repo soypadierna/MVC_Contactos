@@ -261,6 +261,214 @@ namespace MVC_Contactos.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVC_Contactos.Models.TBLFACTURADETALLE", b =>
+                {
+                    b.Property<int>("IdDetalle")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDetalle"));
+
+                    b.Property<decimal>("DecPrecioUnitario")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DecSubtotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("IdFactura")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProducto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IntCantidad")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdDetalle");
+
+                    b.HasIndex("IdFactura");
+
+                    b.HasIndex("IdProducto");
+
+                    b.ToTable("TBLFACTURADETALLE");
+
+                    b.HasData(
+                        new
+                        {
+                            IdDetalle = 1,
+                            DecPrecioUnitario = 1500m,
+                            DecSubtotal = 15000m,
+                            IdFactura = 1,
+                            IdProducto = 1,
+                            IntCantidad = 10
+                        },
+                        new
+                        {
+                            IdDetalle = 2,
+                            DecPrecioUnitario = 3500m,
+                            DecSubtotal = 17500m,
+                            IdFactura = 1,
+                            IdProducto = 4,
+                            IntCantidad = 5
+                        },
+                        new
+                        {
+                            IdDetalle = 3,
+                            DecPrecioUnitario = 9800m,
+                            DecSubtotal = 19600m,
+                            IdFactura = 2,
+                            IdProducto = 6,
+                            IntCantidad = 2
+                        },
+                        new
+                        {
+                            IdDetalle = 4,
+                            DecPrecioUnitario = 5200m,
+                            DecSubtotal = 15600m,
+                            IdFactura = 2,
+                            IdProducto = 7,
+                            IntCantidad = 3
+                        },
+                        new
+                        {
+                            IdDetalle = 5,
+                            DecPrecioUnitario = 4800m,
+                            DecSubtotal = 19200m,
+                            IdFactura = 3,
+                            IdProducto = 2,
+                            IntCantidad = 4
+                        },
+                        new
+                        {
+                            IdDetalle = 6,
+                            DecPrecioUnitario = 4500m,
+                            DecSubtotal = 4500m,
+                            IdFactura = 4,
+                            IdProducto = 8,
+                            IntCantidad = 1
+                        },
+                        new
+                        {
+                            IdDetalle = 7,
+                            DecPrecioUnitario = 1200m,
+                            DecSubtotal = 12000m,
+                            IdFactura = 4,
+                            IdProducto = 9,
+                            IntCantidad = 10
+                        });
+                });
+
+            modelBuilder.Entity("MVC_Contactos.Models.TBLFACTURAS", b =>
+                {
+                    b.Property<int>("IdFactura")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdFactura"));
+
+                    b.Property<decimal>("DecDescuento")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DecIva")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DecSubtotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DecTotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("DtmFecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DtmFechaModifica")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEmpleado")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdEstado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StrUsuarioModifico")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdFactura");
+
+                    b.HasIndex("IdCliente");
+
+                    b.HasIndex("IdEmpleado");
+
+                    b.ToTable("TBLFACTURAS");
+
+                    b.HasData(
+                        new
+                        {
+                            IdFactura = 1,
+                            DecDescuento = 0m,
+                            DecIva = 6175m,
+                            DecSubtotal = 32500m,
+                            DecTotal = 38675m,
+                            DtmFecha = new DateTime(2026, 11, 18, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCliente = 1,
+                            IdEmpleado = 2,
+                            IdEstado = 2,
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdFactura = 2,
+                            DecDescuento = 3520m,
+                            DecIva = 6019.20m,
+                            DecSubtotal = 35200m,
+                            DecTotal = 37699.20m,
+                            DtmFecha = new DateTime(2026, 11, 19, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCliente = 2,
+                            IdEmpleado = 4,
+                            IdEstado = 1,
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdFactura = 3,
+                            DecDescuento = 0m,
+                            DecIva = 3648m,
+                            DecSubtotal = 19200m,
+                            DecTotal = 22848m,
+                            DtmFecha = new DateTime(2026, 11, 20, 14, 15, 0, 0, DateTimeKind.Unspecified),
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCliente = 1,
+                            IdEmpleado = 2,
+                            IdEstado = 3,
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdFactura = 4,
+                            DecDescuento = 825m,
+                            DecIva = 2978.25m,
+                            DecSubtotal = 16500m,
+                            DecTotal = 18653.25m,
+                            DtmFecha = new DateTime(2026, 10, 25, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCliente = 3,
+                            IdEmpleado = 3,
+                            IdEstado = 4,
+                            StrUsuarioModifico = "javier"
+                        });
+                });
+
             modelBuilder.Entity("MVC_Contactos.Models.TBLPRODUCTOS", b =>
                 {
                     b.Property<int>("IdProducto")
@@ -477,6 +685,36 @@ namespace MVC_Contactos.Migrations
                     b.Navigation("TBLROLES");
                 });
 
+            modelBuilder.Entity("MVC_Contactos.Models.TBLFACTURADETALLE", b =>
+                {
+                    b.HasOne("MVC_Contactos.Models.TBLFACTURAS", "Factura")
+                        .WithMany("Detalles")
+                        .HasForeignKey("IdFactura")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MVC_Contactos.Models.TBLPRODUCTOS", "Producto")
+                        .WithMany()
+                        .HasForeignKey("IdProducto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Factura");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("MVC_Contactos.Models.TBLFACTURAS", b =>
+                {
+                    b.HasOne("MVC_Contactos.Models.TBLEMPLEADO", "Empleado")
+                        .WithMany()
+                        .HasForeignKey("IdEmpleado")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Empleado");
+                });
+
             modelBuilder.Entity("MVC_Contactos.Models.TBLPRODUCTOS", b =>
                 {
                     b.HasOne("MVC_Contactos.Models.TBLCATEGORIAS", "Categoria")
@@ -486,6 +724,11 @@ namespace MVC_Contactos.Migrations
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("MVC_Contactos.Models.TBLFACTURAS", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }

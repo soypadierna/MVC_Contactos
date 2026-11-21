@@ -78,6 +78,11 @@ namespace MVC_Contactos.Controllers
         {
             var otabla = _context.TBLEMPLEADO.Find(id);
             if (otabla == null) return NotFound();
+            if (_context.TBLFACTURAS.Any(f => f.IdEmpleado == id))
+            {
+                TempData["Error"] = "No se puede eliminar: el empleado tiene facturas.";
+                return Redirect("/TBLEmpleado/index");
+            }
             _context.TBLEMPLEADO.Remove(otabla);
             _context.SaveChanges();
             return Redirect("/TBLEmpleado/index");
