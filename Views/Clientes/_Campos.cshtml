@@ -1,0 +1,43 @@
+@model MVC_Contactos.Models.Cliente
+
+<div class="form-group">
+    <label asp-for="StrNombre" class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        <input asp-for="StrNombre" class="form-control" />
+        <span asp-validation-for="StrNombre" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <label asp-for="NumDocumento" class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        <input asp-for="NumDocumento" class="form-control" />
+        <span asp-validation-for="NumDocumento" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <label asp-for="StrDireccion" class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        <input asp-for="StrDireccion" class="form-control" />
+        <span asp-validation-for="StrDireccion" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <label asp-for="StrTelefono" class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        <input asp-for="StrTelefono" class="form-control" />
+        <span asp-validation-for="StrTelefono" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <label asp-for="StrEmail" class="control-label col-md-2"></label>
+    <div class="col-md-10">
+        <input asp-for="StrEmail" class="form-control" />
+        <span asp-validation-for="StrEmail" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-default">Cancelar</a>
+    </div>
+</div>

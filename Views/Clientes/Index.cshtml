@@ -1,0 +1,46 @@
+@model IEnumerable<MVC_Contactos.Models.Cliente>
+@{
+    ViewBag.Title = "Lista de Clientes";
+    Layout = "~/Views/Shared/_LayoutFacturacion.cshtml";
+}
+<h2>Lista de Clientes</h2>
+
+<div class="well">
+    <a asp-action="Create" class="btn btn-primary">NUEVO</a>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.IdCliente</td>
+                    <td>@cliente.StrNombre</td>
+                    <td>@cliente.NumDocumento</td>
+                    <td>@cliente.StrTelefono</td>
+                    <td>@cliente.StrEmail</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@cliente.IdCliente" class="btn btn-primary">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@cliente.IdCliente" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">No hay clientes registrados.</div>
+}
