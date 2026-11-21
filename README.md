@@ -11,7 +11,8 @@ Aplicación web ASP.NET Core MVC para administrar contactos (CRUD de personas).
 
 - [x] Entorno validado y proyecto base creado.
 - [x] Modelo, DbContext y migración.
-- [x] Controlador y vistas del CRUD.
+- [x] CRUD de personas (`/CRUD_Persona`).
+- [x] Módulo de facturación: páginas informativas (`/Principal`) y CRUD de empleados (`/TBLempleado`).
 
 ## Versiones y dependencias
 
@@ -85,18 +86,29 @@ Abrir: `http://localhost:<puerto>/CRUD_Persona`
 | Ruta | Descripción |
 |---|---|
 | `Controllers/CRUD_PersonaController.cs` | CRUD de personas (EF Core) |
-| `Models/ModeloPersona.cs` | Entidad con validaciones |
+| `Controllers/TBLempleadoController.cs` | CRUD de empleados |
+| `Controllers/PrincipalController.cs` | Páginas informativas |
+| `Models/ModeloPersona.cs` | Entidad Persona con validaciones |
+| `Models/TBLEMPLEADO.cs`, `Models/TBLROLES.cs` | Entidades de empleados y roles |
 | `Data/ContactosDbContext.cs` | DbContext y datos iniciales |
 | `Migrations/` | Migraciones de EF Core |
-| `Views/CRUD_Persona/` | Vistas Index, Nuevo, Editar, Borrar |
-| `Views/Shared/_LayoutModerno.cshtml` | Layout con Bootstrap 3 (CDN) |
+| `Views/CRUD_Persona/` | Vistas de personas |
+| `Views/TBLempleado/`, `Views/Principal/` | Vistas de facturación |
+| `Views/Shared/_LayoutModerno.cshtml` | Layout de personas (Bootstrap 3) |
+| `Views/Shared/_LayoutFacturacion.cshtml` | Layout de facturación (Bootstrap 3) |
 | `Program.cs` | Configuración y arranque |
 
 ## Base de datos
 
-Tabla `Personas` (`PersonaId` PK identity, `Nombre`, `Telefono`, `Email`). Migración `InicialPersonas` con 4 registros iniciales.
+Tablas:
+- `Personas`: `PersonaId` (PK), `Nombre`, `Telefono`, `Email`.
+- `TBLEMPLEADO`: datos del empleado, `IdRolEmpleado` (FK a `TBLROLES`).
+- `TBLROLES`: `IdRolEmpleado` (PK), `StrDescripcion`. Roles iniciales: Administrador, Vendedor, Cajero.
+
+Migraciones: `InicialPersonas`, `AgregarEmpleados`.
 
 ## Historial de cambios
 
 - Proyecto base creado en net10.0 con EF Core 10.0.15.
-- Migración del CRUD de MVC 5 a ASP.NET Core con SQL Server LocalDB.
+- Migración del CRUD de personas de MVC 5 a ASP.NET Core con SQL Server LocalDB.
+- Migración del módulo de facturación: empleados, roles y páginas informativas.
