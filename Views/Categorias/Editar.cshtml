@@ -1,0 +1,10 @@
+@model MVC_Contactos.Models.TBLCATEGORIAS
+@{
+    ViewBag.Title = "Editar categoría";
+}
+<h2>Editar categoría</h2>
+
+<form asp-action="Editar" method="post" class="form-horizontal">
+    <input type="hidden" asp-for="IdCategoria" />
+    <partial name="_Campos" />
+</form>

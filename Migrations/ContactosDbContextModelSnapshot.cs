@@ -80,6 +80,63 @@ namespace MVC_Contactos.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVC_Contactos.Models.TBLCATEGORIAS", b =>
+                {
+                    b.Property<int>("IdCategoria")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategoria"));
+
+                    b.Property<DateTime?>("DtmFechaModifica")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StrDescripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("StrUsuarioModifico")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdCategoria");
+
+                    b.HasIndex("StrDescripcion")
+                        .IsUnique();
+
+                    b.ToTable("TBLCATEGORIAS");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCategoria = 1,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StrDescripcion = "Bebidas",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdCategoria = 2,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StrDescripcion = "Snacks",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdCategoria = 3,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StrDescripcion = "Aseo",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdCategoria = 4,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StrDescripcion = "Papelería",
+                            StrUsuarioModifico = "javier"
+                        });
+                });
+
             modelBuilder.Entity("MVC_Contactos.Models.TBLEMPLEADO", b =>
                 {
                     b.Property<int>("IdEmpleado")
@@ -204,6 +261,180 @@ namespace MVC_Contactos.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MVC_Contactos.Models.TBLPRODUCTOS", b =>
+                {
+                    b.Property<int>("IdProducto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProducto"));
+
+                    b.Property<decimal>("DecPrecioCompra")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DecPrecioVenta")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("DtmFechaModifica")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdCategoria")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IntStock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StrCodigo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("StrDetalle")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("StrFoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StrNombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("StrUsuarioModifico")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdProducto");
+
+                    b.HasIndex("IdCategoria");
+
+                    b.HasIndex("StrCodigo")
+                        .IsUnique();
+
+                    b.ToTable("TBLPRODUCTOS");
+
+                    b.HasData(
+                        new
+                        {
+                            IdProducto = 1,
+                            DecPrecioCompra = 900m,
+                            DecPrecioVenta = 1500m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 1,
+                            IntStock = 120,
+                            StrCodigo = "AGU-001",
+                            StrDetalle = "Botella PET",
+                            StrNombre = "Agua mineral 600 ml",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 2,
+                            DecPrecioCompra = 3200m,
+                            DecPrecioVenta = 4800m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 1,
+                            IntStock = 60,
+                            StrCodigo = "GAS-001",
+                            StrDetalle = "Botella familiar",
+                            StrNombre = "Gaseosa cola 1.5 L",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 3,
+                            DecPrecioCompra = 2800m,
+                            DecPrecioVenta = 4200m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 1,
+                            IntStock = 45,
+                            StrCodigo = "JUG-001",
+                            StrDetalle = "Caja tetrapak",
+                            StrNombre = "Jugo de naranja 1 L",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 4,
+                            DecPrecioCompra = 2100m,
+                            DecPrecioVenta = 3500m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 2,
+                            IntStock = 80,
+                            StrCodigo = "SNK-001",
+                            StrDetalle = "Sabor natural",
+                            StrNombre = "Papas fritas 150 g",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 5,
+                            DecPrecioCompra = 1200m,
+                            DecPrecioVenta = 2000m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 2,
+                            IntStock = 100,
+                            StrCodigo = "SNK-002",
+                            StrDetalle = "Paquete x6",
+                            StrNombre = "Galletas de chocolate",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 6,
+                            DecPrecioCompra = 6500m,
+                            DecPrecioVenta = 9800m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 3,
+                            IntStock = 30,
+                            StrCodigo = "ASE-001",
+                            StrDetalle = "Ropa blanca y de color",
+                            StrNombre = "Detergente en polvo 1 kg",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 7,
+                            DecPrecioCompra = 3000m,
+                            DecPrecioVenta = 5200m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 3,
+                            IntStock = 40,
+                            StrCodigo = "ASE-002",
+                            StrDetalle = "Antibacterial",
+                            StrNombre = "Jabón de manos 500 ml",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 8,
+                            DecPrecioCompra = 2500m,
+                            DecPrecioVenta = 4500m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 4,
+                            IntStock = 3,
+                            StrCodigo = "PAP-001",
+                            StrDetalle = "Pasta blanda",
+                            StrNombre = "Cuaderno rayado 100 hojas",
+                            StrUsuarioModifico = "javier"
+                        },
+                        new
+                        {
+                            IdProducto = 9,
+                            DecPrecioCompra = 600m,
+                            DecPrecioVenta = 1200m,
+                            DtmFechaModifica = new DateTime(2026, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdCategoria = 4,
+                            IntStock = 200,
+                            StrCodigo = "PAP-002",
+                            StrDetalle = "Punta media",
+                            StrNombre = "Lapicero azul",
+                            StrUsuarioModifico = "javier"
+                        });
+                });
+
             modelBuilder.Entity("MVC_Contactos.Models.TBLROLES", b =>
                 {
                     b.Property<int>("IdRolEmpleado")
@@ -244,6 +475,17 @@ namespace MVC_Contactos.Migrations
                         .HasForeignKey("TBLROLESIdRolEmpleado");
 
                     b.Navigation("TBLROLES");
+                });
+
+            modelBuilder.Entity("MVC_Contactos.Models.TBLPRODUCTOS", b =>
+                {
+                    b.HasOne("MVC_Contactos.Models.TBLCATEGORIAS", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("IdCategoria")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
                 });
 #pragma warning restore 612, 618
         }
