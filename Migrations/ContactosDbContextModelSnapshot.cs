@@ -22,64 +22,6 @@ namespace MVC_Contactos.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MVC_Contactos.Models.ModeloPersona", b =>
-                {
-                    b.Property<int>("PersonaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonaId"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("PersonaId");
-
-                    b.ToTable("Personas");
-
-                    b.HasData(
-                        new
-                        {
-                            PersonaId = 1,
-                            Email = "javiy2k@gmail.com",
-                            Nombre = "Juan",
-                            Telefono = "3333333"
-                        },
-                        new
-                        {
-                            PersonaId = 2,
-                            Email = "pepe@gmail.com",
-                            Nombre = "pepe",
-                            Telefono = "2345678"
-                        },
-                        new
-                        {
-                            PersonaId = 3,
-                            Email = "Luis@gmail.com",
-                            Nombre = "luis",
-                            Telefono = "444444"
-                        },
-                        new
-                        {
-                            PersonaId = 4,
-                            Email = "Carmen@gmail.com",
-                            Nombre = "Carmen",
-                            Telefono = "678868"
-                        });
-                });
-
             modelBuilder.Entity("MVC_Contactos.Models.TBLCATEGORIAS", b =>
                 {
                     b.Property<int>("IdCategoria")
