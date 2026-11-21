@@ -19,7 +19,11 @@
     <style>
         .navbar { margin-bottom: 0; border-radius: 0; }
         .sidenav { padding: 20px 15px; background-color: #345863; }
-        footer { background-color: #555; color: white; padding: 15px; }
+        html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+.container-fluid.contenedor-principal { flex: 1 0 auto; width: 100%; }
+.container-fluid {margin: 0;}
+footer { background-color: #555; color: white; padding: 15px; flex-shrink: 0; }
         footer p { margin: 0; }
         .caja { background-color: #eeeeee; padding: 20px; margin: 15px 0; border-radius: 4px; }
         .caja h2, .caja h4, .caja p { margin-top: 0; }
@@ -35,7 +39,7 @@
         .form-horizontal .input-validation-error { border-color: #a94442; }
         @@media screen and (max-width: 991px) { .form-horizontal .control-label { text-align: left; } }
         @@media screen and (min-width: 768px) {
-            .row.content { display: flex; min-height: 565px; }
+            .row.content { display: flex; min-height: 100%; }
             .row.content::before, .row.content::after { display: none; }
         }
     </style>
@@ -61,7 +65,7 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid text-center">
+    <div class="container-fluid text-center contenedor-principal">
         <div class="row content">
             <div class="col-sm-3 col-md-2 sidenav">
                 <div class="panel-group">
