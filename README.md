@@ -10,8 +10,8 @@ Aplicación web ASP.NET Core MVC para administrar contactos (CRUD de personas).
 ## Estado actual
 
 - [x] Entorno validado y proyecto base creado.
-- [ ] Modelo, DbContext y migración.
-- [ ] Controlador y vistas del CRUD.
+- [x] Modelo, DbContext y migración.
+- [x] Controlador y vistas del CRUD.
 
 ## Versiones y dependencias
 
@@ -68,23 +68,35 @@ dotnet run
 
 ## Configuración
 
-La cadena de conexión se definirá en `appsettings.json` (pendiente).
+Cadena de conexión en `appsettings.json` (clave `ContactosConnection`), apunta a LocalDB:
+
+`Server=(localdb)\MSSQLLocalDB;Database=MVC_Contactos;Trusted_Connection=True;TrustServerCertificate=True`
+
+Crear la base de datos y aplicar migraciones:
+
+```powershell
+dotnet ef database update
+```
+
+Abrir: `http://localhost:<puerto>/CRUD_Persona`
 
 ## Estructura del proyecto
 
 | Ruta | Descripción |
 |---|---|
-| `Controllers/` | Controladores MVC |
-| `Models/` | Modelos de datos |
-| `Views/` | Vistas Razor |
-| `wwwroot/` | Archivos estáticos |
+| `Controllers/CRUD_PersonaController.cs` | CRUD de personas (EF Core) |
+| `Models/ModeloPersona.cs` | Entidad con validaciones |
+| `Data/ContactosDbContext.cs` | DbContext y datos iniciales |
+| `Migrations/` | Migraciones de EF Core |
+| `Views/CRUD_Persona/` | Vistas Index, Nuevo, Editar, Borrar |
+| `Views/Shared/_LayoutModerno.cshtml` | Layout con Bootstrap 3 (CDN) |
 | `Program.cs` | Configuración y arranque |
-| `appsettings.json` | Configuración de la aplicación |
 
 ## Base de datos
 
-Pendiente: modelo `ModeloPersona`, `DbContext` y migraciones.
+Tabla `Personas` (`PersonaId` PK identity, `Nombre`, `Telefono`, `Email`). Migración `InicialPersonas` con 4 registros iniciales.
 
 ## Historial de cambios
 
 - Proyecto base creado en net10.0 con EF Core 10.0.15.
+- Migración del CRUD de MVC 5 a ASP.NET Core con SQL Server LocalDB.

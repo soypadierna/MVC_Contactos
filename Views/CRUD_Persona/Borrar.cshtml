@@ -1,0 +1,17 @@
+@model MVC_Contactos.Models.ModeloPersona
+@{
+    ViewBag.Title = "BORRAR PERSONA";
+    Layout = "~/Views/Shared/_LayoutModerno.cshtml";
+}
+<h2 class="well">@ViewBag.Title </h2>
+<div>
+    <p> ID : @Model.PersonaId</p>
+    <p> Nombre: @Model.Nombre</p>
+    <p> Telefono: @Model.Telefono</p>
+    <p> Correo: @Model.Email</p>
+    <form method="post" action="/CRUD_Persona/BorrarConfirmado">
+        <input type="hidden" name="PersonaId" value="@Model.PersonaId" />
+        <input type="submit" value="Borrar" class="btn btn-danger" /> <a class="btn btninfo"
+                                                                         href="/CRUD_Persona">Retornar</a>
+    </form>
+</div>

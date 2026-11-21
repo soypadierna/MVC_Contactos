@@ -1,0 +1,41 @@
+@model List<MVC_Contactos.Models.ModeloPersona>
+@{
+    Layout = "~/Views/Shared/_LayoutModerno.cshtml";
+}
+<br />
+<h2 class="well">@ViewBag.Titulo </h2>
+<br />
+<a href="/CRUD_Persona/Nuevo" class="btn btn-success">NUEVO</a>
+<p></p>
+<div class="table-bordered">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.PersonaId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>
+                        <a class="btn btn-primary" href="/CRUD_Persona/Editar/@item.PersonaId">Editar</a>-
+                        @Html.ActionLink("Borrar", "Borrar", new { id = item.PersonaId }, new
+                        {
+                            @class = "btn btndanger",
+                            role = "button"
+                        })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
