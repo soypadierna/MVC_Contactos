@@ -1,0 +1,100 @@
+@model MVC_Contactos.Models.InformeVM
+@using MVC_Contactos.Services
+@{
+    ViewData["Title"] = "Informes";
+}
+<h2>Informes</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var e in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@e.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form method="get" action="@Url.Action("Index")" class="form-inline caja">
+    <div class="form-group">
+        <label for="Tipo">Informe</label>
+        <select id="Tipo" name="Tipo" class="form-control">
+            @foreach (var t in InformesService.Tipos)
+            {
+                <option value="@t.Key" selected="@(t.Key == Model.Tipo)">@t.Value</option>
+            }
+        </select>
+    </div>
+    <div class="form-group fechas">
+        <label for="Desde">Desde</label>
+        <input type="date" id="Desde" name="Desde" class="form-control" value="@Model.Desde?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="form-group fechas">
+        <label for="Hasta">Hasta</label>
+        <input type="date" id="Hasta" name="Hasta" class="form-control" value="@Model.Hasta?.ToString("yyyy-MM-dd")" />
+    </div>
+    <button type="submit" name="generar" value="true" class="btn btn-primary">Generar</button>
+    @if (Model.Resultado != null)
+    {
+        <a class="btn btn-success" href="@Url.Action("Exportar", new { tipo = Model.Tipo, desde = Model.Desde?.ToString("yyyy-MM-dd"), hasta = Model.Hasta?.ToString("yyyy-MM-dd") })">Exportar CSV</a>
+    }
+</form>
+
+@if (Model.Resultado != null)
+{
+    var r = Model.Resultado;
+    <h3>@r.Titulo @if (r.Periodo != "") { <small>@r.Periodo</small> }</h3>
+    foreach (var s in r.Secciones)
+    {
+        <div class="caja">
+            <h4>@s.Titulo</h4>
+            @if (s.Metricas.Count > 0)
+            {
+                <div class="row">
+                    @foreach (var m in s.Metricas)
+                    {
+                        <div class="col-xs-6 col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-body text-center">
+                                    <strong style="font-size:18px">@m.Valor</strong><br />
+                                    <small class="text-muted">@m.Etiqueta</small>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            @if (s.Columnas.Count > 0)
+            {
+                if (s.Filas.Count == 0)
+                {
+                    <p class="text-muted">Sin datos para el periodo.</p>
+                }
+                else
+                {
+                    <table class="table table-striped table-condensed">
+                        <thead><tr>@foreach (var c in s.Columnas) { <th>@c</th> }</tr></thead>
+                        <tbody>
+                            @foreach (var f in s.Filas)
+                            {
+                                <tr>@foreach (var v in f) { <td>@v</td> }</tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+    }
+}
+
+<script>
+    $(function () {
+        function fechas() { $('.fechas').toggle($('#Tipo').val() !== 'inventario'); }
+        $('#Tipo').on('change', fechas);
+        fechas();
+    });
+</script>
